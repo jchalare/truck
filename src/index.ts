@@ -10,6 +10,9 @@ import rutasCiudad from './routes/ciudad.rutas';
 import rutasConductor from './routes/conductor.rutas';
 import rutasVehiculo from './routes/vehiculo.rutas';
 import rutasManifiesto from './routes/manifiesto.rutas';
+import rutasPerfil from "./routes/perfil.rutas";
+import rutasCompania from "./routes/compania.rutas";
+
 
 
 async function main() {
@@ -35,7 +38,11 @@ async function main() {
   app.use(rutasCiudad);
   app.use(rutasConductor);
   app.use(rutasVehiculo);
-  app.use(rutasManifiesto);  
+  app.use(rutasManifiesto);
+  app.use(rutasPerfil); 
+  app.use(rutasCompania);
+  app.use(rutasCompania);
+  
   
   app.listen(app.get('port'));
   console.log('Server on port', app.get('port'));

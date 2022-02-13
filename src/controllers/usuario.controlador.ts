@@ -27,11 +27,11 @@ export const generarJwt = (uid:any) => {
 
 export const loginUsuario = async (req: Request, res: Response): Promise<Response> => {
     
-    const {nombre, clave } = req.body;
+    const {email, clave } = req.body;
     
     try{
        //verificar usuario y contraseña
-       const usuarioEncontrado = await getRepository(Usuario).findOne({nombre});
+       const usuarioEncontrado = await getRepository(Usuario).findOne({email});
        
        if(!usuarioEncontrado){
         return res.status(400).json({msg:`Usuario incorrecto`})
@@ -50,10 +50,12 @@ export const loginUsuario = async (req: Request, res: Response): Promise<Respons
        //luego generar el token
        const token = await generarJwt(usuarioEncontrado.id);
        const usuarioFinal = {
+           uid: usuarioEncontrado.id,
            nombre: usuarioEncontrado.nombre,
-           estado: usuarioEncontrado.estado
+           estado: usuarioEncontrado.estado,
+           token
        }
-          return res.json({token,usuarioEncontrado});
+          return res.json({"usuario":usuarioFinal});
     }catch(error){
         return res.status(500).json({msg:'Error en token'});
     }   
@@ -69,7 +71,7 @@ export const getUsuarios = async (req: Request, res: Response): Promise<Response
 export const getUsuario = async (req: Request, res: Response): Promise<Response> => {
     const results = await getRepository(Usuario).findOne(req.params.id);
     if(results){
-        return res.json({nombre:results.nombre,id:results.id});
+        return res.json({nombre:results.nombre,id:results.id,email:results.email});
     }else{
         return res.json({msg: 'Not user found'});
     }    
@@ -77,15 +79,15 @@ export const getUsuario = async (req: Request, res: Response): Promise<Response>
 
 export const createUsuarios = async (req: Request, res: Response): Promise<Response> => {
     
-    const {nombre, clave } = req.body;
-    const results = await getRepository(Usuario).findOne({nombre:nombre});
+    const {nombre, clave, email } = req.body;
+    const results = await getRepository(Usuario).findOne({email});
     if(results){
-        return res.json({msg: 'user already exists'});
+        return res.json({msg: `Usuario ${nombre} ya existe`});
     }else{
         
         const salt = bcryptjs.genSaltSync(10);
         const claveEncript = bcryptjs.hashSync(clave,salt);
-        const nuevoUsuario =  getRepository(Usuario).create({nombre, clave:claveEncript });
+        const nuevoUsuario =  getRepository(Usuario).create({nombre, clave:claveEncript,email });
         await getRepository(Usuario).save(nuevoUsuario);
         
         return res.json({msg: `Usuario ${nombre} creado exitosamente`});

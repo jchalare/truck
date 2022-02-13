@@ -23,6 +23,9 @@ export class Conductor extends BaseEntity {
   @Column()
   cuenta_banco: string;
 
+  @Column('text', {default: null})
+  email_conductor: string;
+
   @ManyToOne((type) => Ciudad)
   @JoinColumn([{ name: "id_ciudad" }, { name: "id" }])
   ciudad_: Ciudad;

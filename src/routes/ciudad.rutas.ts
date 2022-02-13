@@ -9,5 +9,4 @@ rutasCiudad.get("/ciudad/:id",validaJwt,getCiudad);
 rutasCiudad.post("/ciudad",validaJwt,createCiudades);
 rutasCiudad.put("/ciudad/:id",validaJwt,updateCiudades);
 
-
 export default rutasCiudad;
