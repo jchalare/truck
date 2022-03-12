@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
-import {  getRepository } from "typeorm";
+import {  getRepository,getConnection } from "typeorm";
 import { Usuario } from '../entidades/UsuarioEntidad';
 import jwt from "jsonwebtoken";
 import  bcryptjs  from "bcryptjs";
+import { Perfil } from "../entidades/PerfilEntidad";
+import { Compania } from "../entidades/CompaniaEntidad";
 
 
 
@@ -31,7 +33,16 @@ export const loginUsuario = async (req: Request, res: Response): Promise<Respons
     
     try{
        //verificar usuario y contraseña
-       const usuarioEncontrado = await getRepository(Usuario).findOne({email});
+       //const usuarioEncontrado = await getRepository(Usuario).findOne({email});
+
+       const usuarioEncontrado = await getRepository(Usuario)
+                                .createQueryBuilder("usuario")
+                                .innerJoinAndSelect("usuario.perfil_", "perfil")
+                                .innerJoinAndSelect("perfil.compania_","compania")
+                                .where("usuario.email = :email ", { email})
+                                .getOne();
+
+        
        
        if(!usuarioEncontrado){
         return res.status(400).json({msg:`Usuario incorrecto`})
@@ -49,10 +60,17 @@ export const loginUsuario = async (req: Request, res: Response): Promise<Respons
        
        //luego generar el token
        const token = await generarJwt(usuarioEncontrado.id);
+
+       const {perfil_} = usuarioEncontrado;
+       
        const usuarioFinal = {
            uid: usuarioEncontrado.id,
            nombre: usuarioEncontrado.nombre,
            estado: usuarioEncontrado.estado,
+           compania:usuarioEncontrado.perfil_.compania_.id,
+           compania_nombre:perfil_.compania_.nombre,
+           perfil:perfil_.id,
+           perfil_nombre:perfil_.nombre,
            token
        }
           return res.json({"usuario":usuarioFinal});
@@ -79,15 +97,15 @@ export const getUsuario = async (req: Request, res: Response): Promise<Response>
 
 export const createUsuarios = async (req: Request, res: Response): Promise<Response> => {
     
-    const {nombre, clave, email } = req.body;
+    const {nombre, clave, email,perfil_ } = req.body;
     const results = await getRepository(Usuario).findOne({email});
     if(results){
-        return res.json({msg: `Usuario ${nombre} ya existe`});
+        return res.json({msg: ` Email ${email} ya existe`});
     }else{
         
         const salt = bcryptjs.genSaltSync(10);
         const claveEncript = bcryptjs.hashSync(clave,salt);
-        const nuevoUsuario =  getRepository(Usuario).create({nombre, clave:claveEncript,email });
+        const nuevoUsuario =  getRepository(Usuario).create({perfil_,nombre,clave:claveEncript,email });
         await getRepository(Usuario).save(nuevoUsuario);
         
         return res.json({msg: `Usuario ${nombre} creado exitosamente`});

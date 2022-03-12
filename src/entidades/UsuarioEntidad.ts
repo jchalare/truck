@@ -3,7 +3,6 @@ import {Entity, Column, PrimaryGeneratedColumn,
         Unique,BaseEntity,ManyToOne,
         JoinColumn,AfterInsert,getRepository } from 'typeorm'
 import { Perfil } from './PerfilEntidad';
-import { Permisos } from './PermisosEntidad';
 
 @Entity()
 export class Usuario extends BaseEntity {
@@ -22,10 +21,11 @@ export class Usuario extends BaseEntity {
   @Column('boolean', {default: true})
   estado: boolean=true;
 
-  @ManyToOne((type) => Perfil)
+  @ManyToOne(() => Perfil, perfil => perfil.id)
   @JoinColumn([{ name: "id_perfil" }, { name: "id" }])
   perfil_: Perfil;
-
+ 
+  
   @AfterInsert()
   insertPermisos() {
     const objPermisos = {
@@ -37,8 +37,6 @@ export class Usuario extends BaseEntity {
     }
     
     console.log(objPermisos)
-
-
-  }
+ }
   
 }

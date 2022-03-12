@@ -4,12 +4,11 @@ import {Entity, Column, PrimaryGeneratedColumn,
         CreateDateColumn, Double,JoinColumn,
         OneToMany } from 'typeorm'
 import { Ciudad } from './CiudadEntidad';
+import { Compania } from './CompaniaEntidad';
 import { Conductor } from './ConductorEntidad';
 import { Empresa } from './EmpresaEntidad';
+import { Usuario } from './UsuarioEntidad';
 import { Vehiculo } from './VehiculoEntidad';
-
-
-
 
 @Unique(['numero'])
 @Entity()
@@ -70,4 +69,15 @@ export class Manifiesto extends BaseEntity {
 
   @Column({ type: "text" })
   notas: string;
+
+  @ManyToOne(() => Usuario, usuario => usuario.id)
+  @JoinColumn([{ name: "id_usuario_creador" }, { name: "id" }])
+  creador_: Usuario;
+
+
+  @ManyToOne(() => Compania, compania => compania.id)
+  @JoinColumn([{ name: "id_compania" }, { name: "id" }])
+  compania_: Compania;
+
+
 }

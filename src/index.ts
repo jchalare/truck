@@ -13,8 +13,6 @@ import rutasManifiesto from './routes/manifiesto.rutas';
 import rutasPerfil from "./routes/perfil.rutas";
 import rutasCompania from "./routes/compania.rutas";
 
-
-
 async function main() {
   const app = express();
   conexionBD();  
@@ -40,9 +38,7 @@ async function main() {
   app.use(rutasVehiculo);
   app.use(rutasManifiesto);
   app.use(rutasPerfil); 
-  app.use(rutasCompania);
-  app.use(rutasCompania);
-  
+  app.use(rutasCompania);  
   
   app.listen(app.get('port'));
   console.log('Server on port', app.get('port'));
