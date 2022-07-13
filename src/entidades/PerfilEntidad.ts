@@ -3,7 +3,7 @@ import {Entity, Column, PrimaryGeneratedColumn, Index,BaseEntity,ManyToOne,JoinC
 import { Compania } from './CompaniaEntidad';
 import { Usuario } from './UsuarioEntidad';
 
-@Index(["nombre", "compania_"], { unique: true })
+@Index(["nombre", "id_compania_perfil"], { unique: true })
 @Entity()
 export class Perfil extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -13,11 +13,11 @@ export class Perfil extends BaseEntity {
   nombre: string;
 
   @ManyToOne((type) => Compania)
-  @JoinColumn([{ name: "id_compania" }, { name: "id" }])
-  compania_: Compania;
+  @JoinColumn([{ name: "id_compania_perfil" }, { name: "id" }])
+  id_compania_perfil: Compania;
 
 
-  @OneToMany(() => Usuario, usuario => usuario.perfil_)
+  @OneToMany(() => Usuario, usuario => usuario.id_perfil_usuario)
   usuario: Usuario[];
 
 }

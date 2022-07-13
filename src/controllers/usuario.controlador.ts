@@ -61,16 +61,16 @@ export const loginUsuario = async (req: Request, res: Response): Promise<Respons
        //luego generar el token
        const token = await generarJwt(usuarioEncontrado.id);
 
-       const {perfil_} = usuarioEncontrado;
+       const {id_perfil_usuario} = usuarioEncontrado;
        
        const usuarioFinal = {
            uid: usuarioEncontrado.id,
            nombre: usuarioEncontrado.nombre,
            estado: usuarioEncontrado.estado,
-           compania:usuarioEncontrado.perfil_.compania_.id,
-           compania_nombre:perfil_.compania_.nombre,
-           perfil:perfil_.id,
-           perfil_nombre:perfil_.nombre,
+           compania:usuarioEncontrado.id_perfil_usuario.id_compania_perfil.id,
+           compania_nombre:id_perfil_usuario.id_compania_perfil.nombre,
+           perfil:id_perfil_usuario.id,
+           perfil_nombre:id_perfil_usuario.nombre,
            token
        }
           return res.json({"usuario":usuarioFinal});
@@ -97,7 +97,7 @@ export const getUsuario = async (req: Request, res: Response): Promise<Response>
 
 export const createUsuarios = async (req: Request, res: Response): Promise<Response> => {
     
-    const {nombre, clave, email,perfil_ } = req.body;
+    const {nombre, clave, email,id_perfil_usuario,id_compania_usuario } = req.body;
     const results = await getRepository(Usuario).findOne({email});
     if(results){
         return res.json({msg: ` Email ${email} ya existe`});
@@ -105,7 +105,7 @@ export const createUsuarios = async (req: Request, res: Response): Promise<Respo
         
         const salt = bcryptjs.genSaltSync(10);
         const claveEncript = bcryptjs.hashSync(clave,salt);
-        const nuevoUsuario =  getRepository(Usuario).create({perfil_,nombre,clave:claveEncript,email });
+        const nuevoUsuario =  getRepository(Usuario).create({id_perfil_usuario,nombre,clave:claveEncript,email,id_compania_usuario });
         await getRepository(Usuario).save(nuevoUsuario);
         
         return res.json({msg: `Usuario ${nombre} creado exitosamente`});

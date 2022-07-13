@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const ciudad_controlador_1 = require("../controllers/ciudad.controlador");
+const validarJwt_1 = require("../middlewares/validarJwt");
+const rutasCiudad = (0, express_1.Router)();
+rutasCiudad.get("/ciudad", validarJwt_1.validaJwt, ciudad_controlador_1.getCiudades);
+rutasCiudad.get("/ciudad/:id", validarJwt_1.validaJwt, ciudad_controlador_1.getCiudad);
+rutasCiudad.post("/ciudad", validarJwt_1.validaJwt, ciudad_controlador_1.createCiudades);
+rutasCiudad.put("/ciudad/:id", validarJwt_1.validaJwt, ciudad_controlador_1.updateCiudades);
+exports.default = rutasCiudad;

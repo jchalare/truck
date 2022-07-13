@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const perfil_controlador_1 = require("../controllers/perfil.controlador");
+const validarJwt_1 = require("../middlewares/validarJwt");
+const rutasPerfil = (0, express_1.Router)();
+rutasPerfil.get("/perfil", validarJwt_1.validaJwt, perfil_controlador_1.getPerfiles);
+rutasPerfil.get("/Perfil/:id", validarJwt_1.validaJwt, perfil_controlador_1.getPerfil);
+rutasPerfil.post("/Perfil", validarJwt_1.validaJwt, perfil_controlador_1.createPerfiles);
+rutasPerfil.put("/Perfil/:id", validarJwt_1.validaJwt, perfil_controlador_1.updatePerfiles);
+exports.default = rutasPerfil;

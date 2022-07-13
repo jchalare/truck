@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const trailer_controlador_1 = require("../controllers/trailer.controlador");
+const validarJwt_1 = require("../middlewares/validarJwt");
+const rutasTrailer = (0, express_1.Router)();
+rutasTrailer.get("/trailer", validarJwt_1.validaJwt, trailer_controlador_1.getTrailers);
+rutasTrailer.get("/trailer/:id", validarJwt_1.validaJwt, trailer_controlador_1.getTrailer);
+rutasTrailer.post("/trailer", validarJwt_1.validaJwt, trailer_controlador_1.createTrailers);
+rutasTrailer.put("/trailer/:id", validarJwt_1.validaJwt, trailer_controlador_1.updateTrailers);
+exports.default = rutasTrailer;

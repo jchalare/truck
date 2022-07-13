@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const conductor_controlador_1 = require("../controllers/conductor.controlador");
+const validarJwt_1 = require("../middlewares/validarJwt");
+const rutasConductor = (0, express_1.Router)();
+rutasConductor.get("/conductor", validarJwt_1.validaJwt, conductor_controlador_1.getConductores);
+rutasConductor.get("/conductor/:id", validarJwt_1.validaJwt, conductor_controlador_1.getConductor);
+rutasConductor.post("/conductor", validarJwt_1.validaJwt, conductor_controlador_1.createConductores);
+rutasConductor.put("/conductor/:id", validarJwt_1.validaJwt, conductor_controlador_1.updateConductors);
+exports.default = rutasConductor;
