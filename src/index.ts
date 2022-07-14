@@ -1,8 +1,8 @@
+import "reflect-metadata"
 import express  from "express";
 import morgan from "morgan";
 import cors from "cors";
-import "reflect-metadata";
-import { conexionBD } from "./db/db";
+
 import rutasUsuario from "./routes/usuario.rutas";
 import rutasEmpresa from './routes/empresa.rutas';
 import rutasTrailer from './routes/trailer.rutas';
@@ -13,10 +13,17 @@ import rutasManifiesto from './routes/manifiesto.rutas';
 import rutasPerfil from "./routes/perfil.rutas";
 import rutasCompania from "./routes/compania.rutas";
 
+import { AppDataSource } from "./db/db";
+
 async function main() {
+
+  try {
+
   const app = express();
-  conexionBD();  
-  
+
+  await AppDataSource.initialize();
+  console.log("base de datos conectada !");
+
   //settings  
   app.set('port',process.env.PORT||4000);
   
@@ -31,17 +38,22 @@ async function main() {
   });
 
   app.use(rutasUsuario);
-  app.use(rutasEmpresa);
+  /*app.use(rutasEmpresa);
   app.use(rutasTrailer);
   app.use(rutasCiudad);
   app.use(rutasConductor);
   app.use(rutasVehiculo);
   app.use(rutasManifiesto);
   app.use(rutasPerfil); 
-  app.use(rutasCompania);  
+  app.use(rutasCompania);  */
   
   app.listen(app.get('port'));
   console.log('Server on port', app.get('port'));
+    
+  } catch (error) {
+    console.log('Error',error);
+  }
+ 
   
 }
 

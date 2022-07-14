@@ -1,12 +1,16 @@
 import { Request, Response } from "express";
-import {  getRepository,getConnection } from "typeorm";
+import { DataSource } from "typeorm";
 import { Usuario } from '../entidades/UsuarioEntidad';
 import jwt from "jsonwebtoken";
 import  bcryptjs  from "bcryptjs";
 import { Perfil } from "../entidades/PerfilEntidad";
 import { Compania } from "../entidades/CompaniaEntidad";
+import { AppDataSource } from '../db/db';
+import { UsuarioSubscriber } from "../subscribers/usuario.subscriber";
 
 
+
+const dataSource = AppDataSource;
 
 export const generarJwt = (uid:any) => {
     return new Promise ((resolve, reject)=>{
@@ -33,9 +37,8 @@ export const loginUsuario = async (req: Request, res: Response): Promise<Respons
     
     try{
        //verificar usuario y contraseña
-       //const usuarioEncontrado = await getRepository(Usuario).findOne({email});
 
-       const usuarioEncontrado = await getRepository(Usuario)
+       const usuarioEncontrado = await dataSource.getRepository(Usuario)
                                 .createQueryBuilder("usuario")
                                 .innerJoinAndSelect("usuario.perfil_", "perfil")
                                 .innerJoinAndSelect("perfil.compania_","compania")
@@ -82,12 +85,15 @@ export const loginUsuario = async (req: Request, res: Response): Promise<Respons
  
 
 export const getUsuarios = async (req: Request, res: Response): Promise<Response> => {
-    const usuarioEncontrado = await getRepository(Usuario).find();
+    const usuarioEncontrado = await dataSource.getRepository(Usuario).find();
     return res.json(usuarioEncontrado);
 };
 
 export const getUsuario = async (req: Request, res: Response): Promise<Response> => {
-    const results = await getRepository(Usuario).findOne(req.params.id);
+
+    const id_usuario = parseInt(req.params.id);
+
+    const results = await Usuario.findOneBy({id: id_usuario});
     if(results){
         return res.json({nombre:results.nombre,id:results.id,email:results.email});
     }else{
@@ -98,29 +104,77 @@ export const getUsuario = async (req: Request, res: Response): Promise<Response>
 export const createUsuarios = async (req: Request, res: Response): Promise<Response> => {
     
     const {nombre, clave, email,id_perfil_usuario,id_compania_usuario } = req.body;
-    const results = await getRepository(Usuario).findOne({email});
+
+    const results = await dataSource.getRepository(Usuario).findOneBy({email});
     if(results){
         return res.json({msg: ` Email ${email} ya existe`});
     }else{
-        
+
+        const dataSource = AppDataSource;
         const salt = bcryptjs.genSaltSync(10);
         const claveEncript = bcryptjs.hashSync(clave,salt);
-        const nuevoUsuario =  getRepository(Usuario).create({id_perfil_usuario,nombre,clave:claveEncript,email,id_compania_usuario });
-        await getRepository(Usuario).save(nuevoUsuario);
+         
+
+   /*const queryRunner = dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+
+    await queryRunner.startTransaction();
+
+    try {
+
+        const salt = bcryptjs.genSaltSync(10);
+        const claveEncript = bcryptjs.hashSync(clave,salt);
+
+        const nuevoUsuario = new Usuario();
+        nuevoUsuario.id_perfil_usuario = id_perfil_usuario;
+        nuevoUsuario.nombre = nombre;
+        nuevoUsuario.clave = claveEncript;
+        nuevoUsuario.email = email;
+        nuevoUsuario.id_compania_usuario = id_compania_usuario;
+
+     
+
+    // execute some operations on this transaction:
+    await queryRunner.manager.save(nuevoUsuario);
+
+    // commit transaction now:
+    await queryRunner.commitTransaction();
+        
+
+} catch (err) {
+    // since we have errors let's rollback changes we made
+    await queryRunner.rollbackTransaction();
+    console.log('Error en Rollback');
+} finally {
+    // you need to release query runner which is manually created:
+    await queryRunner.release();
+}
+        
+        */
+
+
+
+      
+
+
+        const nuevoUsuario =  dataSource.getRepository(Usuario).create({id_perfil_usuario,nombre,clave:claveEncript,email,id_compania_usuario });
+        await dataSource.getRepository(Usuario).save(nuevoUsuario);
         
         return res.json({msg: `Usuario ${nombre} creado exitosamente`});
     }    
 };
 
 export const updateUsuarios = async (req: Request, res: Response): Promise<Response> => {
-    const user = await getRepository(Usuario).findOne(req.params.id);
+    const id = parseInt(req.params.id);
+    const user = await dataSource.getRepository(Usuario).findOneBy({id});
     if (user) {
         const {clave} = req.body
         const salt = bcryptjs.genSaltSync();
         user.clave = bcryptjs.hashSync(clave,salt);
 
-        getRepository(Usuario).merge(user, clave);
-        const results = await getRepository(Usuario).save(user);
+        dataSource.getRepository(Usuario).merge(user, clave);
+        const results = await dataSource.getRepository(Usuario).save(user);
         
       return res.json({nombre:results.nombre, id:results.id});
     }

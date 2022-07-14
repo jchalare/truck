@@ -1,7 +1,27 @@
-import { createConnection } from "typeorm";
+import { DataSource } from "typeorm";
 import path from "path";
 
-export async function conexionBD() {
+
+
+    export const AppDataSource = new DataSource({
+    type: "postgres",
+    host: "localhost",
+    port: 5432,
+    username: "jachm",
+    password: "jachm",
+    database: "db_truck",
+    entities: [path.join(__dirname, "../entidades/**/**.ts")],
+    subscribers: [path.join(__dirname, "../subscriber/**/**.ts")],
+    synchronize: true,
+    logging: true
+      })
+
+    
+ 
+
+
+
+ /*async function conexionBD() {
 
   try {
     
@@ -11,9 +31,9 @@ export async function conexionBD() {
       port: 5432,
       username: "jachm",
       password: "jachm",
-      database: "db_truck",
-      entities: [path.join(__dirname, "../entidades/**/**.ts")],
-      synchronize: true,
+      database: "db_truck",*/
+      //entities: [path.join(__dirname, "../entidades/**/**.ts")],
+      /*synchronize: true,
     });  
   
     console.log("base de datos conectada !");
@@ -22,4 +42,4 @@ export async function conexionBD() {
     
   }
 
-}
+}*/

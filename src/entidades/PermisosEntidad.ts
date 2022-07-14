@@ -8,9 +8,15 @@ import { Usuario } from './UsuarioEntidad';
 export class Permisos extends BaseEntity {
 
   
-  @OneToOne(() => Usuario, { primary: true, cascade: true })
+  /*@OneToOne(() => Usuario, { primary: true, cascade: true })
   @JoinColumn({ name: 'id_usuario' })
-  id_usuario: Usuario;
+  id_usuario: Usuario;*/
+ @PrimaryGeneratedColumn()
+  id: number;
+
+  @OneToOne(() => Usuario,(usuario)=>usuario.id)
+  @JoinColumn({ name: 'id_usuario' })
+  id_usuario: number ;
 
   @Column('boolean', {default: false})
   permiso_ver: boolean = false;
@@ -20,7 +26,5 @@ export class Permisos extends BaseEntity {
 
   @Column('boolean', {default: false})
   permiso_modificar: boolean = false;
-
-  
 
 }
