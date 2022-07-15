@@ -1,15 +1,22 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
 import { Compania } from "../entidades/CompaniaEntidad";
+import { AppDataSource } from '../db/db';
+
+
+
+const dataSource = AppDataSource;
+
 
 
 export const getCompanias = async (req: Request, res: Response): Promise<Response> => {
-    const CompaniaEncontrado = await getRepository(Compania).find();
+    const CompaniaEncontrado = await dataSource.getRepository(Compania).find();
     return res.json(CompaniaEncontrado);
 };
 
 export const getCompania = async (req: Request, res: Response): Promise<Response> => {
-    const results = await getRepository(Compania).findOne(req.params.id);
+    const id = parseInt(req.params.id);
+
+    const results = await dataSource.getRepository(Compania).findOneBy({id});
     if(results){
         return res.json(results);
     }else{
@@ -19,17 +26,18 @@ export const getCompania = async (req: Request, res: Response): Promise<Response
 };
 
 export const createCompanias = async (req: Request, res: Response): Promise<Response> => {
-    const nuevoCompania =  getRepository(Compania).create(req.body);
-    const respuesta = await getRepository(Compania).save(nuevoCompania);
+    const nuevoCompania =  dataSource.getRepository(Compania).create(req.body);
+    const respuesta = await dataSource.getRepository(Compania).save(nuevoCompania);
     return res.json(respuesta);
 };
 
 export const updateCompanias = async (req: Request, res: Response): Promise<Response> => {
-    const compania = await getRepository(Compania).findOne(req.params.id);
+    const id = parseInt(req.params.id);
+    const compania = await dataSource.getRepository(Compania).findOneBy({id});
     if (compania) {
         const nombre = req.body
-        getRepository(Compania).merge(compania, nombre);
-        const results = await getRepository(Compania).save(compania);
+        dataSource.getRepository(Compania).merge(compania, nombre);
+        const results = await dataSource.getRepository(Compania).save(compania);
       return res.json(results);
     }
   

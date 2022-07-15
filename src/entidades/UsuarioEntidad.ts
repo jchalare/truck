@@ -38,57 +38,5 @@ export class Usuario extends BaseEntity {
 
   @OneToOne(() => Permisos, (permiso) => permiso.id_usuario) // specify inverse side as a second parameter
   id_usuario: Permisos
-
  
-  
-  @AfterInsert()
-  public async insertPermisos() {
-
-
-   /* const queryRunner = dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-
-    await queryRunner.startTransaction();
-
-    try {
-
-    const objPermisos = new Permisos();
-    objPermisos.id_usuario = this.id;
-    objPermisos.permiso_ver = true;
-    objPermisos.permiso_modificar = true;
-    objPermisos.permiso_grabar = true;
-
-    // execute some operations on this transaction:
-    await queryRunner.manager.save(objPermisos);
-
-    // commit transaction now:
-    await queryRunner.commitTransaction();
-        console.log(objPermisos)
-
-} catch (err) {
-    // since we have errors let's rollback changes we made
-    await queryRunner.rollbackTransaction();
-} finally {
-    // you need to release query runner which is manually created:
-    await queryRunner.release();
-}
-*/
-
-
-
-
-    
-
-    /*await dataSource.transaction(async Permisos => { 
-        await Permisos.save(objPermisos);      
-      });
-     */
-    
-    //const nuevoPermiso =  getRepository(Permisos).create(objPermisos);
-    //await manager.save(objPermisos); //getRepository(Permisos).save(nuevoPermiso);
-        
-    }
-  
-  
 }

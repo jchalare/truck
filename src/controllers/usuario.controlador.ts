@@ -1,13 +1,11 @@
 import { Request, Response } from "express";
-import { DataSource } from "typeorm";
 import { Usuario } from '../entidades/UsuarioEntidad';
 import jwt from "jsonwebtoken";
 import  bcryptjs  from "bcryptjs";
 import { Perfil } from "../entidades/PerfilEntidad";
 import { Compania } from "../entidades/CompaniaEntidad";
 import { AppDataSource } from '../db/db';
-import { UsuarioSubscriber } from "../subscribers/usuario.subscriber";
-
+import { Permisos } from "../entidades/PermisosEntidad";
 
 
 const dataSource = AppDataSource;
@@ -29,8 +27,6 @@ export const generarJwt = (uid:any) => {
     });
 }
 
-
-
 export const loginUsuario = async (req: Request, res: Response): Promise<Response> => {
     
     const {email, clave } = req.body;
@@ -40,12 +36,14 @@ export const loginUsuario = async (req: Request, res: Response): Promise<Respons
 
        const usuarioEncontrado = await dataSource.getRepository(Usuario)
                                 .createQueryBuilder("usuario")
-                                .innerJoinAndSelect("usuario.perfil_", "perfil")
-                                .innerJoinAndSelect("perfil.compania_","compania")
+                                .innerJoinAndSelect("usuario.id_perfil_usuario", "perfil")
+                                .innerJoinAndSelect("perfil.id_compania_perfil","compania")
                                 .where("usuario.email = :email ", { email})
                                 .getOne();
 
-        
+
+
+        console.log(usuarioEncontrado);
        
        if(!usuarioEncontrado){
         return res.status(400).json({msg:`Usuario incorrecto`})
@@ -60,7 +58,9 @@ export const loginUsuario = async (req: Request, res: Response): Promise<Respons
        if(!claveValida){
         return res.status(400).json({msg:`Usuario incorrecto -p `})
        }
-       
+
+       const permisosUsuario = await dataSource.getRepository(Permisos).findOneBy({id_usuario: usuarioEncontrado.id});        
+             
        //luego generar el token
        const token = await generarJwt(usuarioEncontrado.id);
 
@@ -74,6 +74,9 @@ export const loginUsuario = async (req: Request, res: Response): Promise<Respons
            compania_nombre:id_perfil_usuario.id_compania_perfil.nombre,
            perfil:id_perfil_usuario.id,
            perfil_nombre:id_perfil_usuario.nombre,
+           permiso_ver: permisosUsuario?.permiso_ver,
+           permiso_grabar:permisosUsuario?.permiso_grabar,
+           permiso_modificar:permisosUsuario?.permiso_modificar,
            token
        }
           return res.json({"usuario":usuarioFinal});
@@ -114,50 +117,6 @@ export const createUsuarios = async (req: Request, res: Response): Promise<Respo
         const salt = bcryptjs.genSaltSync(10);
         const claveEncript = bcryptjs.hashSync(clave,salt);
          
-
-   /*const queryRunner = dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-
-    await queryRunner.startTransaction();
-
-    try {
-
-        const salt = bcryptjs.genSaltSync(10);
-        const claveEncript = bcryptjs.hashSync(clave,salt);
-
-        const nuevoUsuario = new Usuario();
-        nuevoUsuario.id_perfil_usuario = id_perfil_usuario;
-        nuevoUsuario.nombre = nombre;
-        nuevoUsuario.clave = claveEncript;
-        nuevoUsuario.email = email;
-        nuevoUsuario.id_compania_usuario = id_compania_usuario;
-
-     
-
-    // execute some operations on this transaction:
-    await queryRunner.manager.save(nuevoUsuario);
-
-    // commit transaction now:
-    await queryRunner.commitTransaction();
-        
-
-} catch (err) {
-    // since we have errors let's rollback changes we made
-    await queryRunner.rollbackTransaction();
-    console.log('Error en Rollback');
-} finally {
-    // you need to release query runner which is manually created:
-    await queryRunner.release();
-}
-        
-        */
-
-
-
-      
-
-
         const nuevoUsuario =  dataSource.getRepository(Usuario).create({id_perfil_usuario,nombre,clave:claveEncript,email,id_compania_usuario });
         await dataSource.getRepository(Usuario).save(nuevoUsuario);
         

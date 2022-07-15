@@ -1,14 +1,19 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
+import { AppDataSource } from "../db/db";
 import { Manifiesto } from '../entidades/ManifiestoEntidad';
 
+const dataSource = AppDataSource;
+
+
 export const getManifiestos = async (req: Request, res: Response): Promise<Response> => {
-    const ManifiestoEncontrado = await getRepository(Manifiesto).find();
+    const ManifiestoEncontrado = await dataSource.getRepository(Manifiesto).find();
     return res.json(ManifiestoEncontrado);
 };
 
 export const getManifiesto = async (req: Request, res: Response): Promise<Response> => {
-    const results = await getRepository(Manifiesto).findOne(req.params.id);
+    const id = parseInt(req.params.id);
+
+    const results = await dataSource.getRepository(Manifiesto).findOneBy({id});
     if(results){
         return res.json(results);
     }else{
@@ -19,17 +24,19 @@ export const getManifiesto = async (req: Request, res: Response): Promise<Respon
 
 export const createManifiestos = async (req: Request, res: Response): Promise<Response> => {
     //const {nombre, clave} = req.body
-    const nuevoManifiesto =  getRepository(Manifiesto).create(req.body);
-    const respuesta = await getRepository(Manifiesto).save(nuevoManifiesto);
+    const nuevoManifiesto =  dataSource.getRepository(Manifiesto).create(req.body);
+    const respuesta = await dataSource.getRepository(Manifiesto).save(nuevoManifiesto);
     return res.json(respuesta);
 };
 
 export const updateManifiestos = async (req: Request, res: Response): Promise<Response> => {
-    const manifiesto = await getRepository(Manifiesto).findOne(req.params.id);
+    const id = parseInt(req.params.id);
+
+    const manifiesto = await dataSource.getRepository(Manifiesto).findOneBy({id});
     if (manifiesto) {
         const clave = req.body
-        getRepository(Manifiesto).merge(manifiesto, clave);
-        const results = await getRepository(Manifiesto).save(manifiesto);
+        dataSource.getRepository(Manifiesto).merge(manifiesto, clave);
+        const results = await dataSource.getRepository(Manifiesto).save(manifiesto);
       return res.json(results);
     }
   

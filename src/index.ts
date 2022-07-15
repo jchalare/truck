@@ -38,14 +38,14 @@ async function main() {
   });
 
   app.use(rutasUsuario);
-  /*app.use(rutasEmpresa);
+  app.use(rutasEmpresa);
   app.use(rutasTrailer);
   app.use(rutasCiudad);
   app.use(rutasConductor);
   app.use(rutasVehiculo);
   app.use(rutasManifiesto);
   app.use(rutasPerfil); 
-  app.use(rutasCompania);  */
+  app.use(rutasCompania);  
   
   app.listen(app.get('port'));
   console.log('Server on port', app.get('port'));

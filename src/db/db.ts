@@ -11,7 +11,7 @@ import path from "path";
     password: "jachm",
     database: "db_truck",
     entities: [path.join(__dirname, "../entidades/**/**.ts")],
-    subscribers: [path.join(__dirname, "../subscriber/**/**.ts")],
+    subscribers: [path.join(__dirname, "../subscribers/**/**.ts")],
     synchronize: true,
     logging: true
       })
