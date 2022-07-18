@@ -1,7 +1,7 @@
 
 import {Entity, Column, PrimaryGeneratedColumn, Unique,BaseEntity,ManyToOne,JoinColumn,OneToMany } from 'typeorm'
 import { Ciudad } from './CiudadEntidad';
-import { Manifiesto } from './ManifiestoEntidad';
+import { Viaje } from './ViajeEntidad';
 
 
 
@@ -18,7 +18,7 @@ export class Conductor extends BaseEntity {
   nombre: string;
 
   @Column()
-  Apellido: string;
+  apellido: string;
 
   @Column()
   cuenta_banco: string;
@@ -27,14 +27,18 @@ export class Conductor extends BaseEntity {
   email_conductor: string;
 
   @ManyToOne((type) => Ciudad)
-  @JoinColumn([{ name: "id_ciudad" }, { name: "id" }])
-  ciudad_: Ciudad;
+  @JoinColumn([{ name: "id_ciudad_conductor" }, { name: "id" }])
+  id_ciudad_conductor: Ciudad;
 
   @Column()
   direccion: string;
 
-  @OneToMany(() => Manifiesto, manifiesto => manifiesto.conductor_)
-  manifiesto: Manifiesto[];
+  
+  @Column()
+  telefono: string;
+
+  @OneToMany(() => Viaje, viaje => viaje.id_conductor)
+  id_conductor: Viaje[];
 
   
 }

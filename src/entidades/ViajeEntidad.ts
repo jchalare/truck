@@ -10,51 +10,42 @@ import { Empresa } from './EmpresaEntidad';
 import { Usuario } from './UsuarioEntidad';
 import { Vehiculo } from './VehiculoEntidad';
 
-@Unique(['numero'])
+@Unique(['numero_viaje'])
 @Entity()
-export class Manifiesto extends BaseEntity {
+export class Viaje extends BaseEntity {
   @PrimaryGeneratedColumn()
   @PrimaryColumn()
   id: number;
 
   @Column()
-  numero: string;
+  numero_viaje: string;
   
   @ManyToOne((type) => Vehiculo)
-  @JoinColumn([{ name: "id_vehiculo" }, { name: "id" }])
-  vehiculo_: Vehiculo;
+  @JoinColumn([{ name: "viaje_vehiculo_id" }, { name: "id" }])
+  viaje_vehiculo: Vehiculo;
 
   @ManyToOne((type) => Empresa)
-  @JoinColumn([{ name: "id_empresa" }, { name: "id" }])
-  empresa_: Empresa;
+  @JoinColumn([{ name: "viaje_empresa_id" }, { name: "id" }])
+  viaje_empresa: Empresa;
 
   @ManyToOne(() => Ciudad, ciudad => ciudad.id)
-  @JoinColumn([{ name: "id_origen" }, { name: "id" }])
-  origen_: Ciudad;
+  @JoinColumn([{ name: "viaje_origen_id" }, { name: "id" }])
+  viaje_origen_id: Ciudad;
 
   @ManyToOne(() => Ciudad, ciudad => ciudad.id)
-  @JoinColumn([{ name: "id_destino" }, { name: "id" }])
-  destino_: Ciudad;
+  @JoinColumn([{ name: "viaje_destino_id" }, { name: "id" }])
+  viaje_destino_id: Ciudad;
 
   @ManyToOne(() => Conductor, conductor => conductor.id)
   @JoinColumn([{ name: "id_conductor" }, { name: "id" }])
-  conductor_: Conductor;
+  id_conductor: Conductor;
 
   @Column({ type: "numeric" })
-  valor_viaje: number;
+  valor_flete: number;
 
   @Column({ type: "numeric" })
   valor_anticipo: number;
   
-  @Column({ type: "money" })
-  valor_peaje: number;
-
-  @Column({ type: "numeric" })
-  valor_combustible: number;
-
-  @Column({ type: "numeric" })
-  valor_x_cobrar: number;
-
   @Column({ type: "numeric" })
   valor_total_costo: number;
 
@@ -72,12 +63,12 @@ export class Manifiesto extends BaseEntity {
 
   @ManyToOne(() => Usuario, usuario => usuario.id)
   @JoinColumn([{ name: "id_usuario_creador" }, { name: "id" }])
-  creador_: Usuario;
+  id_usuario_creador: Usuario;
 
 
   @ManyToOne(() => Compania, compania => compania.id)
   @JoinColumn([{ name: "id_compania" }, { name: "id" }])
-  compania_: Compania;
+  id_compania: Compania;
 
 
 }

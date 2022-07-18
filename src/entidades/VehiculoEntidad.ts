@@ -1,6 +1,6 @@
 
 import {Entity, Column, PrimaryGeneratedColumn, Unique,BaseEntity,PrimaryColumn,OneToMany } from 'typeorm'
-import { Manifiesto } from './ManifiestoEntidad';
+import { Viaje } from './ViajeEntidad';
 
 @Unique(['placa'])
 @Entity()
@@ -12,7 +12,7 @@ export class Vehiculo extends BaseEntity {
   @Column()
   placa: string;
 
-  @OneToMany(() => Manifiesto, manifiesto => manifiesto.vehiculo_)
-  manifiesto: Manifiesto[];
+  @OneToMany(() => Viaje, viaje => viaje.viaje_vehiculo)
+  Viaje: Viaje[];
     
 }

@@ -1,6 +1,6 @@
 
 import {Entity, Column, PrimaryGeneratedColumn, Unique,BaseEntity,OneToMany} from 'typeorm'
-import { Manifiesto } from './ManifiestoEntidad';
+import { Viaje } from './ViajeEntidad';
 import { Conductor } from './ConductorEntidad';
 
 
@@ -9,16 +9,16 @@ import { Conductor } from './ConductorEntidad';
 export class Ciudad extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  
+   
   @Column()
   nombre: string; 
 
-  @OneToMany(() => Manifiesto, manifiesto => manifiesto.origen_)
-  manifiesto_origen: Manifiesto[];
+  @OneToMany(() => Viaje, Viaje => Viaje.viaje_origen_id)
+  viaje_origen_id: Viaje[];
 
-  @OneToMany(() => Manifiesto, manifiesto => manifiesto.destino_)
-  manifiesto_destino: Manifiesto[];
+  @OneToMany(() => Viaje, Viaje => Viaje.viaje_destino_id)
+  viaje_destino_id: Viaje[];
 
-  @OneToMany(() => Conductor, conductor => conductor.ciudad_)
-  ciudad: Ciudad[];
+  @OneToMany(() => Conductor, conductor => conductor.id_ciudad_conductor)
+  id_ciudad_conductor: Ciudad[];
 }

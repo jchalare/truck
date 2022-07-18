@@ -24,21 +24,29 @@ export const getConductor = async (req: Request, res: Response): Promise<Respons
 };
 
 export const createConductores = async (req: Request, res: Response): Promise<Response> => {
-    //const {nombre, clave} = req.body
-    const nuevoConductor =  dataSource.getRepository(Conductor).create(req.body);
-    const respuesta = await dataSource.getRepository(Conductor).save(nuevoConductor);
-    return res.json(respuesta);
+
+    const {cedula,nombre,apellido } = req.body;
+
+    const results = await dataSource.getRepository(Conductor).findOneBy({cedula});
+    if(results){
+        return res.json({msg: ` El conductor con identificacion ${cedula} ya existe`});
+    }else{
+        const nuevoConductor =  dataSource.getRepository(Conductor).create(req.body);
+        const respuesta = await dataSource.getRepository(Conductor).save(nuevoConductor);
+
+        return res.json({msg: `Conductor  ${nombre} ${apellido} creado exitosamente`});
+    }    
 };
 
 export const updateConductors = async (req: Request, res: Response): Promise<Response> => {
     const id = parseInt(req.params.id);
 
-    const conductor = await dataSource.getRepository(Conductor).findOneBy({id});
-    if (conductor) {
-        const clave = req.body
-        dataSource.getRepository(Conductor).merge(conductor, clave);
-        const results = await dataSource.getRepository(Conductor).save(Conductor);
-      return res.json(results);
+    const conductorEncontrado = await dataSource.getRepository(Conductor).findOneBy({id});
+    if (conductorEncontrado) {
+        
+        dataSource.getRepository(Conductor).merge(conductorEncontrado, req.body);
+        const results = await dataSource.getRepository(Conductor).save(conductorEncontrado);
+       return res.json(results);
     }
   
     return res.json({msg: 'Not Conductor found'});

@@ -9,9 +9,14 @@ import rutasTrailer from './routes/trailer.rutas';
 import rutasCiudad from './routes/ciudad.rutas';
 import rutasConductor from './routes/conductor.rutas';
 import rutasVehiculo from './routes/vehiculo.rutas';
-import rutasManifiesto from './routes/manifiesto.rutas';
+import rutasViaje from './routes/viaje.rutas';
 import rutasPerfil from "./routes/perfil.rutas";
 import rutasCompania from "./routes/compania.rutas";
+import rutasViajeDetalle from "./routes/viajedetalle.rutas";
+import rutasTipoDetalle from "./routes/tipodetalle.rutas";
+
+
+
 
 import { AppDataSource } from "./db/db";
 
@@ -43,9 +48,11 @@ async function main() {
   app.use(rutasCiudad);
   app.use(rutasConductor);
   app.use(rutasVehiculo);
-  app.use(rutasManifiesto);
+  app.use(rutasViaje);
   app.use(rutasPerfil); 
-  app.use(rutasCompania);  
+  app.use(rutasCompania);
+  app.use(rutasViajeDetalle);
+  app.use(rutasTipoDetalle);
   
   app.listen(app.get('port'));
   console.log('Server on port', app.get('port'));
