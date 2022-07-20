@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../db/db";
-import { TipoDetalleEntidad } from "../entidades/TipoDetalleEntidad";
+import { TipoDetalle } from "../entidades/TipoDetalleEntidad";
 
 const dataSource = AppDataSource;
 
 
 export const getTiposDetalle = async (req: Request, res: Response): Promise<Response> => {
-    const tipoDetalleEncontrado = await dataSource.getRepository(TipoDetalleEntidad).find();
+    const tipoDetalleEncontrado = await dataSource.getRepository(TipoDetalle).find();
     return res.json(tipoDetalleEncontrado);
 };
 
 export const getTipoDetalle = async (req: Request, res: Response): Promise<Response> => {
     const id = parseInt(req.params.id);
 
-    const results = await dataSource.getRepository(TipoDetalleEntidad).findOneBy({id});
+    const results = await dataSource.getRepository(TipoDetalle).findOneBy({id});
     if(results){
         return res.json(results);
     }else{
@@ -23,19 +23,19 @@ export const getTipoDetalle = async (req: Request, res: Response): Promise<Respo
 };
 
 export const createTipoDetalle = async (req: Request, res: Response): Promise<Response> => {
-    const nuevoTipo =  dataSource.getRepository(TipoDetalleEntidad).create(req.body);
-    const respuesta = await dataSource.getRepository(TipoDetalleEntidad).save(nuevoTipo);
+    const nuevoTipo =  dataSource.getRepository(TipoDetalle).create(req.body);
+    const respuesta = await dataSource.getRepository(TipoDetalle).save(nuevoTipo);
     return res.json(respuesta);
 };
 
 export const updateTipoDetalle = async (req: Request, res: Response): Promise<Response> => {
     const id = parseInt(req.params.id);
 
-    const tipoDetalleEncontrado = await dataSource.getRepository(TipoDetalleEntidad).findOneBy({id});
+    const tipoDetalleEncontrado = await dataSource.getRepository(TipoDetalle).findOneBy({id});
     if (tipoDetalleEncontrado) {
         const nombre = req.body
-        dataSource.getRepository(TipoDetalleEntidad).merge(tipoDetalleEncontrado, nombre);
-        const results = await dataSource.getRepository(TipoDetalleEntidad).save(tipoDetalleEncontrado);
+        dataSource.getRepository(TipoDetalle).merge(tipoDetalleEncontrado, nombre);
+        const results = await dataSource.getRepository(TipoDetalle).save(tipoDetalleEncontrado);
       return res.json(results);
     }
   

@@ -5,13 +5,13 @@ import {Entity, Column, PrimaryGeneratedColumn,
     OneToMany } from 'typeorm'
 import { Empresa } from './EmpresaEntidad';
 
-import { TipoDetalleEntidad } from './TipoDetalleEntidad';
+import { TipoDetalle } from './TipoDetalleEntidad';
 import { Usuario } from './UsuarioEntidad';
 import { Viaje } from './ViajeEntidad';
 
 
 @Entity()
-export class ViajeDetalleEntidad extends BaseEntity {
+export class ViajeDetalle extends BaseEntity {
 
 @PrimaryGeneratedColumn()
 @PrimaryColumn()
@@ -24,9 +24,9 @@ item_detalle: number;
 @JoinColumn([{ name: "id_viaje" }, { name: "id" }])
 id_viaje: Viaje;
 
-@ManyToOne(() => TipoDetalleEntidad, tipodetalle => tipodetalle.id)
+@ManyToOne(() => TipoDetalle, tipodetalle => tipodetalle.id)
 @JoinColumn([{ name: "id_tipo_detalle" }, { name: "id" }])
-id_tipo_detalle: TipoDetalleEntidad;
+id_tipo_detalle: TipoDetalle;
 
 /*@ManyToOne(() => Empresa, empresa => empresa.id)
 @JoinColumn([{ name: "id_empresa" }, { name: "id" }])

@@ -1,13 +1,13 @@
 
 import {Entity, Column, PrimaryGeneratedColumn, Unique,BaseEntity,OneToMany,ManyToOne,JoinColumn} from 'typeorm'
-import { Empresa } from './EmpresaEntidad';
-import { ViajeDetalleEntidad } from './ViajeDetalleEntidad';
+import { Compania } from './CompaniaEntidad';
+import { ViajeDetalle } from './ViajeDetalleEntidad';
 
 
 
-@Unique(['nombre'])
+@Unique(['nombre','id_compania'])
 @Entity()
-export class TipoDetalleEntidad extends BaseEntity {
+export class TipoDetalle extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
   
@@ -17,10 +17,10 @@ export class TipoDetalleEntidad extends BaseEntity {
   @Column('integer',{default: 0})
   especial: number;
   
-  @ManyToOne(() => Empresa, empresa => empresa.id)
-  @JoinColumn([{ name: "id_empresa" }, { name: "id" }])
-  id_empresa: Empresa;
+  @ManyToOne(() => Compania, empresa => empresa.id)
+  @JoinColumn([{ name: "id_compania" }, { name: "id" }])
+  id_compania: Compania;
 
-  @OneToMany(() => ViajeDetalleEntidad, viajedetalle => viajedetalle.id_tipo_detalle)
-  id_tipo_detalle: ViajeDetalleEntidad[];
+  @OneToMany(() => ViajeDetalle, viajedetalle => viajedetalle.id_tipo_detalle)
+  id_tipo_detalle: ViajeDetalle[];
 }

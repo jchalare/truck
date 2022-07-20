@@ -25,8 +25,8 @@ export class Viaje extends BaseEntity {
   viaje_vehiculo: Vehiculo;
 
   @ManyToOne((type) => Empresa)
-  @JoinColumn([{ name: "viaje_empresa_id" }, { name: "id" }])
-  viaje_empresa: Empresa;
+  @JoinColumn([{ name: "id_empresa" }, { name: "id" }])
+  id_empresa: Empresa;
 
   @ManyToOne(() => Ciudad, ciudad => ciudad.id)
   @JoinColumn([{ name: "viaje_origen_id" }, { name: "id" }])
@@ -48,6 +48,9 @@ export class Viaje extends BaseEntity {
   
   @Column({ type: "numeric" })
   valor_total_costo: number;
+
+  @Column({ type: "numeric" })
+  valor_total_costo_real: number;
 
   @CreateDateColumn({ type: "date" })
   fecha_viaje: Date;

@@ -18,7 +18,7 @@ export class Empresa extends BaseEntity {
   @Column()
   telefono: string;
 
-  @OneToMany(() => Viaje, viaje => viaje.viaje_empresa)
-  Viaje: Viaje[];
+  @OneToMany(() => Viaje, viaje => viaje.id_empresa)
+  viaje: Viaje[];
   
 }
