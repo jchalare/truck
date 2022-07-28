@@ -9,6 +9,7 @@ import { Conductor } from './ConductorEntidad';
 import { Empresa } from './EmpresaEntidad';
 import { Usuario } from './UsuarioEntidad';
 import { Vehiculo } from './VehiculoEntidad';
+import { Trailer } from './TrailerEntidad';
 
 @Unique(['numero_viaje'])
 @Entity()

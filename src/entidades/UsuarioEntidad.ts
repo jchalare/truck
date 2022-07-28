@@ -25,8 +25,7 @@ export class Usuario extends BaseEntity {
   email: string;
 
   @Column('boolean', {default: true})
-  estado: boolean=true;
-  
+  estado: boolean=true;  
 
   @ManyToOne(() => Perfil, perfil => perfil.id)
   @JoinColumn([{ name: "id_perfil_usuario" }, { name: "id" }])
