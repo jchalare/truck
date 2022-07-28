@@ -67,7 +67,7 @@ export const loginUsuario = async (req: Request, res: Response): Promise<Respons
        const {id_perfil_usuario} = usuarioEncontrado;
        
        const usuarioFinal = {
-           uid: usuarioEncontrado.id,
+           id: usuarioEncontrado.id,
            nombre: usuarioEncontrado.nombre,
            estado: usuarioEncontrado.estado,
            compania:usuarioEncontrado.id_perfil_usuario.id_compania_perfil.id,
