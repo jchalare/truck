@@ -19,6 +19,7 @@ import rutasTipoDetalle from "./routes/tipodetalle.rutas";
 
 
 import { AppDataSource } from "./db/db";
+import rutasGastos from "./routes/otrosgastos.rutas";
 
 async function main() {
 
@@ -53,6 +54,8 @@ async function main() {
   app.use(rutasCompania);
   app.use(rutasViajeDetalle);
   app.use(rutasTipoDetalle);
+  app.use(rutasGastos);
+  
   
   app.listen(app.get('port'));
   console.log('Server on port', app.get('port'));
