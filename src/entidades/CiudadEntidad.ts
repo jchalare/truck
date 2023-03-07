@@ -1,10 +1,11 @@
 
-import {Entity, Column, PrimaryGeneratedColumn, Unique,BaseEntity,OneToMany} from 'typeorm'
+import {Entity, Column, PrimaryGeneratedColumn, Unique,BaseEntity,OneToMany,ManyToOne,JoinColumn} from 'typeorm'
 import { Viaje } from './ViajeEntidad';
 import { Conductor } from './ConductorEntidad';
+import { Departamento } from './DepartamentoEntidad';
 
 
-@Unique(['nombre'])
+@Unique(['nombre','id_departamento'])
 @Entity()
 export class Ciudad extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -12,6 +13,10 @@ export class Ciudad extends BaseEntity {
    
   @Column()
   nombre: string; 
+
+  @ManyToOne(() => Departamento, departamento => departamento.id)
+  @JoinColumn([{ name: "id_departamento" }, { name: "id" }])
+  id_departamento: Departamento;
 
   @OneToMany(() => Viaje, Viaje => Viaje.viaje_origen_id)
   viaje_origen_id: Viaje[];

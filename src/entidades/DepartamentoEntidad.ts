@@ -3,14 +3,14 @@ import {Entity, Column, PrimaryGeneratedColumn, Unique,BaseEntity,ManyToOne,Join
 import { Usuario } from './UsuarioEntidad';
 
 
-@Unique(['placa'])
+@Unique(['nombre'])
 @Entity()
-export class Trailer extends BaseEntity {
+export class Departamento extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
   
   @Column()
-  placa: string;
+  nombre: string;
   
   @ManyToOne(() => Usuario, usuario => usuario.id)
   @JoinColumn([{ name: "id_usuario" }, { name: "id" }])
