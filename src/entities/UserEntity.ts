@@ -2,37 +2,37 @@
 import {Entity, Column, PrimaryGeneratedColumn, 
         BaseEntity,ManyToOne,
         JoinColumn,OneToOne} from 'typeorm'
-import { Compania } from './CompaniaEntidad';
-import { Permisos } from './PermisosEntidad';
 import { Profile } from './ProfileEntity';
+import { Permission } from './PermissionEntity';
+import { Company } from './CompanyEntity';
 
 
 @Entity('users')
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
   
-  @Column()
-  nombre: string;
+  @Column('varchar', { nullable: false })
+  name: string;
 
-  @Column()
-  clave: string;
+  @Column('varchar', { nullable: false })
+  password: string;
 
-  @Column()
+  @Column('varchar', { nullable: false,unique:true })
   email: string;
 
   @Column('boolean', {default: true})
-  estado: boolean=true;  
+  state: boolean;  
 
   @ManyToOne(() => Profile, profile => profile.id)
   @JoinColumn([{ name: "id_profile" }, { name: "id" }])
   id_profile: Profile;
 
-  @ManyToOne(() => Compania, compania => compania.id)
-  @JoinColumn([{ name: "id_compania_usuario" }, { name: "id" }])
-  id_compania_usuario: Compania;
+  @ManyToOne(() => Company, company => company.id)
+  @JoinColumn([{ name: "id_company" }, { name: "id" }])
+  id_company: Company;
 
-  @OneToOne(() => Permisos, (permiso) => permiso.id_usuario) // specify inverse side as a second parameter
-  id_usuario: Permisos
+  @OneToOne(() => Permission, (permission) => permission.id_user) // specify inverse side as a second parameter
+  id_user: Permission
  
 }
