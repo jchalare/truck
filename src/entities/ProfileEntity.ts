@@ -1,11 +1,11 @@
 
 import {Entity, Column, PrimaryGeneratedColumn, Index,BaseEntity,ManyToOne,JoinColumn,OneToMany} from 'typeorm'
 import { Compania } from './CompaniaEntidad';
-import { Usuario } from './UsuarioEntidad';
+import { User } from './UserEntity';
 
 @Index(["nombre", "id_compania_perfil"], { unique: true })
-@Entity()
-export class Perfil extends BaseEntity {
+@Entity('profiles')
+export class Profile extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
   
@@ -17,7 +17,7 @@ export class Perfil extends BaseEntity {
   id_compania_perfil: Compania;
 
 
-  @OneToMany(() => Usuario, usuario => usuario.id_perfil_usuario)
-  usuario: Usuario[];
+  @OneToMany(() => User, user => user.id_profile)
+  user: User[];
 
 }

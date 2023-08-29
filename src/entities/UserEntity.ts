@@ -1,17 +1,14 @@
 
 import {Entity, Column, PrimaryGeneratedColumn, 
-        Unique,BaseEntity,ManyToOne,
-        JoinColumn,AfterInsert,DataSource,OneToOne} from 'typeorm'
-import { AppDataSource } from '../db/db';
+        BaseEntity,ManyToOne,
+        JoinColumn,OneToOne} from 'typeorm'
 import { Compania } from './CompaniaEntidad';
-import { Perfil } from './PerfilEntidad';
 import { Permisos } from './PermisosEntidad';
+import { Profile } from './ProfileEntity';
 
 
-
-
-@Entity()
-export class Usuario extends BaseEntity {
+@Entity('users')
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
   
@@ -27,9 +24,9 @@ export class Usuario extends BaseEntity {
   @Column('boolean', {default: true})
   estado: boolean=true;  
 
-  @ManyToOne(() => Perfil, perfil => perfil.id)
-  @JoinColumn([{ name: "id_perfil_usuario" }, { name: "id" }])
-  id_perfil_usuario: Perfil;
+  @ManyToOne(() => Profile, profile => profile.id)
+  @JoinColumn([{ name: "id_profile" }, { name: "id" }])
+  id_profile: Profile;
 
   @ManyToOne(() => Compania, compania => compania.id)
   @JoinColumn([{ name: "id_compania_usuario" }, { name: "id" }])

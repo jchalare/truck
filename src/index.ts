@@ -14,12 +14,10 @@ import rutasPerfil from "./routes/perfil.rutas";
 import rutasCompania from "./routes/compania.rutas";
 import rutasViajeDetalle from "./routes/viajedetalle.rutas";
 import rutasTipoDetalle from "./routes/tipodetalle.rutas";
-
-
+import rutasGastos from "./routes/otrosgastos.rutas";
 
 
 import { AppDataSource } from "./db/db";
-import rutasGastos from "./routes/otrosgastos.rutas";
 
 async function main() {
 
