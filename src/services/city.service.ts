@@ -79,5 +79,3 @@ export const updateCityService = async(cityData) => {
        } 
     }
 }
-
-

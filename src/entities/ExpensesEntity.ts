@@ -6,13 +6,11 @@ import { Vehicle } from './VehicleEntity';
 import { DetailType } from './DetailTypeEntity';
 import { User } from './UserEntity';
 
-
-
 @Entity('expenses')
 export class Expense extends BaseEntity {
 
 @PrimaryGeneratedColumn('uuid')
-id: number;
+id: string;
 
 @Column('integer', { nullable: false})
 item_detalle: number;

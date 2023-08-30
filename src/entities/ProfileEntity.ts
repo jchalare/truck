@@ -3,13 +3,13 @@ import {Entity, Column, PrimaryGeneratedColumn, Index,BaseEntity,ManyToOne,JoinC
 import { User } from './UserEntity';
 import { Company } from './CompanyEntity';
 
-@Index(["nombre", "id_compania_perfil"], { unique: true })
+@Index(["name", "id_company"], { unique: true })
 @Entity('profiles')
 export class Profile extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
   
-  @Column()
+  @Column('varchar', { nullable: false, unique:true })
   name: string;
 
   @ManyToOne(() => Company, company => company.id)

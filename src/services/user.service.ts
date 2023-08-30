@@ -1,49 +1,22 @@
-import { UserDto } from "../dto/user.dto";
-import { User } from "../entities/User";
-
+import { User } from "../entities/UserEntity";
 
 
 export const getAllUsersService = () => {
-    return User.find({
-        select: {
-            fullname: true,
-            email: true
-        },
-        relations: {
-          role:true
-        }
-    });
+    return 1;
 }
 
 export const getOneUserByIdService = () => {
 
-    const user: UserDto = {
-        fullname: "Jesus",
-        email: "albertchalare@gmail.com",
-        role: 1
-    }
-
-    return user;
+    return 1;
 }
 
 export const updateOneUserService = () => {
 
-    const user: UserDto = {
-        fullname: "Jesus",
-        email: "albertchalare@gmail.com",
-        role: 1
-    }
-
-    return user;
+    return 1;
 }
 
 export const createNewUserService = () => {
 
-    const user: UserDto = {
-        fullname: "Jesus",
-        email: "albertchalare@gmail.com",
-        role: 1
-    }
-
-    return user;
+  
+    return 1;
 }
