@@ -1,22 +1,14 @@
 import { Request, Response } from "express";
-import { ILike } from "typeorm";
-import { Permisos } from "../entidades/PermisosEntidad";
-import { AppDataSource } from "../db/db";
+import { getPermissionById } from "../services/permission.service";
+/*
 
-const dataSource = AppDataSource;
+export const getUserPermissions = async (req: Request, res: Response): Promise<Response> => {
 
-
-export const getPermisoUsuario = async (req: Request, res: Response): Promise<Response> => {
-
-    const id = parseInt(req.params.id);
-    const results = await dataSource.getRepository(Permisos).findOneBy({id});
-    if(results){
-        return res.json(results);
-    }else{
-        return res.json({msg: 'Not Permisos found'});
-    }
+    const {id} = req.params;
+    const factoryData = await getAll(id);
+    return res.json().send(factoryData);
     
-};
+};*/
 
 /*export const createPermisos = async (req: Request, res: Response): Promise<Response> => {
     const {id_usuario} = req.body;    

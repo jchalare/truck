@@ -20,3 +20,10 @@ export const createNewUserService = () => {
   
     return 1;
 }
+
+export const generateJWT = () => {
+    return 1;
+
+}
+
+export const loginUser = () => { return 1;  }
