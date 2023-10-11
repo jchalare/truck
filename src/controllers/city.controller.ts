@@ -4,13 +4,13 @@ import { getAllCitiesService, getOneCityByIdService,createNewCityService,updateC
 
 export const getAllCities = async (req: Request, res: Response): Promise<Response> => {
     const citiesData = await getAllCitiesService();
-    return res.json().send(citiesData);
+    return res.send(citiesData);
 };
 
 export const getOneCityById = async (req: Request, res: Response): Promise<Response> => {
     const {id} = req.params;
     const cityData = await getOneCityByIdService(id);
-    return res.json().send(cityData);
+    return res.send(cityData);
     
     /*if(cityData){
         return res.json(cityData);
@@ -20,12 +20,12 @@ export const getOneCityById = async (req: Request, res: Response): Promise<Respo
 };
 
 export const createCity = async (req: Request, res: Response): Promise<Response> => {
-    return res.json().send(await createNewCityService(req.body));
+    return res.send(await createNewCityService(req.body));
 };
 
 
 export const updateCity = async (req: Request, res: Response): Promise<Response> => {
-     return res.json().send(await updateCityService(req.body));
+     return res.send(await updateCityService(req.body));
     /*const ciudad = await dataSource.getRepository(City).findOneBy({id});
 
     //return res.json(ciudad);
