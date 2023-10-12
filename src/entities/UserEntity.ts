@@ -1,7 +1,9 @@
 
-import {Entity, Column, PrimaryGeneratedColumn, 
-        BaseEntity,ManyToOne,
-        JoinColumn,OneToOne} from 'typeorm'
+import {
+  Entity, Column, PrimaryGeneratedColumn,
+  BaseEntity, ManyToOne,
+  JoinColumn, OneToOne
+} from 'typeorm'
 import { Profile } from './ProfileEntity';
 import { Permission } from './PermissionEntity';
 import { Company } from './CompanyEntity';
@@ -11,18 +13,18 @@ import { Company } from './CompanyEntity';
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  
+
   @Column('varchar', { nullable: false })
   name: string;
 
   @Column('varchar', { nullable: false })
   password: string;
 
-  @Column('varchar', { nullable: false,unique:true })
+  @Column('varchar', { nullable: false, unique: true })
   email: string;
 
-  @Column('boolean', {default: true})
-  state: boolean;  
+  @Column('boolean', { default: true })
+  state: boolean;
 
   @ManyToOne(() => Profile, profile => profile.id)
   @JoinColumn([{ name: "id_profile" }, { name: "id" }])
@@ -34,5 +36,5 @@ export class User extends BaseEntity {
 
   @OneToOne(() => Permission, (permission) => permission.id_user) // specify inverse side as a second parameter
   id_user: Permission
- 
+
 }

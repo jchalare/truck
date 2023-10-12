@@ -5,23 +5,24 @@ import cors from "cors";
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 
-import rutasUsuario from "./routes/usuario.rutas";
-import rutasEmpresa from './routes/empresa.rutas';
+import userRoutes from "./routes/user.route";
 import trailerRoutes from './routes/trailer.route';
 import cityRoutes from './routes/city.route';
-import rutasConductor from './routes/conductor.rutas';
+import driverRoutes from './routes/driver.route';
 import vehicleRoutes from './routes/vehicle.route';
-import rutasViaje from './routes/viaje.rutas';
+import tripRoutes from './routes/trip.route';
 import profileRoutes from "./routes/profile.route";
-import rutasCompania from "./routes/compania.rutas";
-import rutasViajeDetalle from "./routes/viajedetalle.rutas";
-import rutasTipoDetalle from "./routes/tipodetalle.rutas";
-import rutasGastos from "./routes/otrosgastos.rutas";
+import companyRoutes from "./routes/company.route";
+import detailTripRoutes from "./routes/detailTrip.route";
+import detailTypeRoutes from "./routes/detailType.route";
+import expenseRoutes from "./routes/expenses.route";
+import factoryRoutes from "./routes/factory.route";
+
 
 
 
 import { AppDataSource } from "./db/db";
-import { docOptions } from "./swagger";
+import { docOptions } from "./utils/swagger";
 
 (async function main() {
 
@@ -33,7 +34,7 @@ import { docOptions } from "./swagger";
     console.log("Database is connected !");
 
     //settings  
-    app.set('port', process.env.PORT || 4000);
+    app.set('port', process.env.PORT || 3000);
 
     // Middlewares
     app.use(cors());
@@ -43,24 +44,24 @@ import { docOptions } from "./swagger";
     const specs = swaggerJsDoc(docOptions);
 
     // routes
-    app.get('/', (req, res) => {
+    app.get('/api/', (req, res) => {
       return res.json(`APP IS RUNNING ON PORT ${app.get('port')}`)
     });
 
-    app.use(rutasUsuario);
-    app.use(rutasEmpresa);
-    app.use(trailerRoutes);
-    app.use(cityRoutes);
-    app.use(rutasConductor);
-    app.use(vehicleRoutes);
-    app.use(rutasViaje);
-    app.use(profileRoutes);
-    app.use(rutasCompania);
-    app.use(rutasViajeDetalle);
-    app.use(rutasTipoDetalle);
-    app.use(rutasGastos);
+    app.use('/api', userRoutes);
+    app.use('/api', factoryRoutes);
+    app.use('/api', trailerRoutes);
+    app.use('/api', cityRoutes);
+    app.use('/api', driverRoutes);
+    app.use('/api', vehicleRoutes);
+    app.use('/api', tripRoutes);
+    app.use('/api', profileRoutes);
+    app.use('/api', companyRoutes);
+    app.use('/api', detailTripRoutes);
+    app.use('/api', detailTypeRoutes);
+    app.use('/api', expenseRoutes);
 
-    app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
+    app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 
     app.listen(app.get('port'));
