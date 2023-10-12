@@ -16,7 +16,7 @@ export class Permission extends BaseEntity {
   to_save: boolean = false;
 
   @Column('boolean', {default: false})
-  to_uodate: boolean = false;
+  to_update: boolean = false;
 
   @OneToOne(() => User, user => user.id)
   @JoinColumn([{ name: "id_user" }, { name: "id" }])

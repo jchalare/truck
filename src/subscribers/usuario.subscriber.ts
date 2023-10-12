@@ -5,40 +5,52 @@ import {
   TransactionCommitEvent,
 } from 'typeorm';
 
-import { Usuario } from '../entidades/UsuarioEntidad';
-import { Permisos } from '../entidades/PermisosEntidad';
+import { User } from '../entities/UserEntity';
+import { Permission } from '../entities/PermissionEntity';
+import { createNewPermission } from '../services/permission.service';
+
+
+
 
 @EventSubscriber()
-export class UsuarioSubscriber implements EntitySubscriberInterface<Usuario> {
+export class UsuarioSubscriber implements EntitySubscriberInterface<User> {
 
-  private idUsuarioNuevo: number;
+  private idUsuarioNuevo: String;
 
   listenTo() {
-    return Usuario;
+    return User;
   }
 
 
-   afterInsert(event: InsertEvent<Usuario>) {
+  afterInsert(event: InsertEvent<User>) {
     this.idUsuarioNuevo = event.entity.id;
   }
 
-   async afterTransactionCommit(event: TransactionCommitEvent ) {
+  async afterTransactionCommit(event: TransactionCommitEvent) {
 
-    if(this.idUsuarioNuevo){
+    if (this.idUsuarioNuevo) {
 
-      const results = await event.manager.getRepository(Permisos).findOneBy({id_usuario:this.idUsuarioNuevo});
+      const results = await event.manager.getRepository(Permission).findOneBy({ id: String(this.idUsuarioNuevo) });
 
-      if(!results){
+      if (!results) {
 
-        const objPermisos = new Permisos();
-        objPermisos.id_usuario = this.idUsuarioNuevo
+        /*const objPermisos = new Permission();
+        objPermisos.id_user = String(this.idUsuarioNuevo)
         objPermisos.permiso_ver = true;
         objPermisos.permiso_modificar = true;
-        objPermisos.permiso_grabar = true;
+        objPermisos.permiso_grabar = true;*/
 
-        await event.manager.getRepository(Permisos).save(objPermisos);
-        
-      }  
+        const objPermission = {
+          id_user: String(this.idUsuarioNuevo),
+          to_see: true,
+          to_save: false,
+          to_update: false
+        }
+
+        await createNewPermission(objPermission);
+        //await event.manager.getRepository(Permission).save(objPermission);
+
+      }
     }
-  }    
+  }
 }

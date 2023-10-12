@@ -1,6 +1,6 @@
 
 import {Entity, Column, PrimaryGeneratedColumn, Unique,BaseEntity,PrimaryColumn,OneToMany } from 'typeorm'
-import { Travel } from './TravelEntity';
+import { Trip } from './TripEntity';
 
 @Entity('vehicles')
 export class Vehicle extends BaseEntity {
@@ -10,7 +10,7 @@ export class Vehicle extends BaseEntity {
   @Column('varchar', { nullable: false, unique:true })
   plate: string;
 
-  @OneToMany(() => Travel, travel => travel.travel_number)
-  travel: Travel[];
+  @OneToMany(() => Trip, trip => trip.trip_number)
+  travel: Trip[];
     
 }
